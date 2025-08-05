@@ -18,12 +18,6 @@ def fitting_function(time,L,order):
 
 app = Dash()
 
-fig = go.Figure()
-fit_data = fitting_function(df['Phase'],df['L'],10)
-
-fig.add_trace(go.Scatter(x=df['Phase'], y=df['L'], mode='markers'))
-fig.add_trace(go.Scatter(x=df['Phase'], y=fit_data, mode='lines'))
-
 app.layout = html.Div(children=[
     html.H1(children='Lightcurve Fitting'),
 
@@ -36,8 +30,7 @@ app.layout = html.Div(children=[
     ),
 
     dcc.Graph(
-        id='example-graph',
-        figure=fig
+        id='example-graph'
     )
 ])
 
@@ -46,10 +39,12 @@ app.layout = html.Div(children=[
     Input('variable-slider', 'value')
 )
 
-def update_graph(order,df):
+def update_graph(order):
+    fig = go.Figure()
     fit_data = fitting_function(df['Phase'],df['L'],order)
 
-    fig.add_trace(go.Scatter(x=df['Phase'], y=fit_data, mode='lines')) #updating the fitted trace
+    fig.add_trace(go.Scatter(x=df['Phase'], y=df['L'], mode='markers'))
+    fig.add_trace(go.Scatter(x=df['Phase'], y=fit_data, mode='lines'))
 
     return fig
 
